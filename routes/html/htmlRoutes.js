@@ -16,4 +16,9 @@ router.get("/departments", (req, res) => {
     res.render('departments', { pageTitle });
 });
 
+router.get("*", (req, res) => {
+    let pageTitle = 'Home';
+    res.render('index', { pageTitle });
+});
+
 module.exports = router;
