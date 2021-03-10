@@ -28,7 +28,7 @@ router.get("/employee/:id", async(req, res) => {
 
 router.get("/department/:id", async(req, res) => {
     let { id } = req.params;
-    let people = await DB.findEmployeesByDepartment(id);
+    let people = await DB.findEmpsByDepartment(id);
     res.json(people);
 })
 
