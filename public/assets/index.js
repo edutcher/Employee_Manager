@@ -1,3 +1,5 @@
+var currentRoles = [];
+
 function addEmpToTable(emp) {
     let newRow = $('<tr>');
     let newName = $('<td>').text(`${emp.first_name} ${emp.last_name}`);
@@ -38,8 +40,9 @@ function empSearch(first, last) {
         })
 }
 
-function popDropdowns() {
-    $('#dptDropdown').addClass('loading');
+function popDeptDropdowns() {
+    $('#deptDropdown').addClass('loading');
+    $('#deptDrop').empty();
     let newItem = $('<div>').addClass('item').text(`All`);
     newItem.data('id', 1);
     $('#deptDrop').append(newItem);
@@ -50,35 +53,129 @@ function popDropdowns() {
                 newItem.data('id', dept.id);
                 $('#deptDrop').append(newItem);
             }
-            $('#dptDropdown').removeClass('loading');
-            $('#dptDropdown').dropdown();
-            $('.dropdown')
+            $('#deptDropdown').removeClass('loading');
+            $('#deptDropdown')
                 .dropdown({
                     onChange: function(value, text, $selectedItem) {
                         if ($selectedItem.data('id') === 1) getAllEmployees();
                         else getEmpsByDepartment($selectedItem.data('id'));
+                        $('#deptChoice').text(`Department: ${text}`);
+                        $('#deptChoice').data('id', value);
                     }
                 });
         });
 }
 
+function popRoleDropdown() {
+    $('#roleDropdown').addClass('loading');
+    $('#roleDrop').empty();
+    axios.get('./api/roles')
+        .then(res => {
+            currentRoles = res.data;
+            let roles = [];
+            for (let role of res.data) {
+                let newRole = { value: role.id, name: role.title, text: role.title };
+                roles.push(newRole);
+            }
+            $('#roleDropdown').removeClass('loading');
+            $('#roleDropdown').dropdown('change values', roles);
+            $('#roleDropdown').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    $('#roleChoice').text(`Role: ${text}`);
+                    $('#roleChoice').data('id', value);
+                    popManagerDropdown();
+                },
+            });
+        })
+}
+
+function popManagerDropdown() {
+    $('#managerDropdown').addClass('loading');
+    $('#managerDrop').empty();
+    let id;
+    for (let role of currentRoles) {
+        if (role.id == $('#roleChoice').data('id')) {
+            id = role.department_id;
+            break;
+        }
+    }
+    axios.get(`./api/employees/managers/${id}`)
+        .then(res => {
+            let managers = [];
+            for (let manager of res.data) {
+                let newName = manager.first_name + ' ' + manager.last_name;
+                let newManager = { value: manager.id, name: newName, text: newName };
+                managers.push(newManager);
+            }
+            $('#managerDropdown').removeClass('loading');
+            $('#managerDropdown').dropdown('change values', managers);
+            $('#managerDropdown').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    $('#managerChoice').text(`Manager: ${text}`);
+                    $('#managerChoice').data('id', value);
+                },
+            });
+        })
+}
+
+function addEmployee() {
+    if ($('#newFirstName').val() === '' || $('#newLastName').val() === '' || $('#roleChoice').data('id') === undefined) {
+        return;
+    }
+    let managerID;
+    if ($('#managerChoice').data('id') === undefined) managerID = null;
+    else managerID = parseInt($('#managerChoice').data('id'))
+    let newEmp = {
+        firstName: $('#newFirstName').val(),
+        lastName: $('#newLastName').val(),
+        roleId: parseInt($('#roleChoice').data('id')),
+        isManager: $('.checkbox').checkbox('is checked'),
+        managerId: managerID
+    }
+    axios.post(`./api/employee`, newEmp)
+        .then(res => {
+            empSearch(newEmp.firstName, newEmp.lastName);
+            $('.ui.modal')
+                .modal('hide');
+            $('#newFirstName').val('');
+            $('#newLastName').val('');
+            $('#roleChoice').text('Choose Role');
+            $('#roleChoice').data('id', undefined);
+            $('#managerChoice').text('Choose Manager');
+            $('#managerChoice').data('id', undefined);
+            $('#deptChoice').text('Choose Department');
+            $('#deptChoice').data('id', undefined);
+        })
+}
+
+
+
 $(document).ready(() => {
 
-    $('form').submit((e) => {
+    $('#searchForm').submit((e) => {
         e.preventDefault();
         if ($('#firstName').val() != '' || $('#lastName').val() != '') {
             empSearch($('#firstName').val(), $('#lastName').val());
         }
     })
 
-    $('.dropdown')
+    $('.ui.dropdown')
         .dropdown({
-            onChange: function(value, text, $selectedItem) {
-                if ($selectedItem.data('id') === 1) getAllEmployees();
-                else getEmpsByDepartment($selectedItem.data('id'));
-            }
+            allowAdditions: true
         });
 
+    $('#newEmpForm').submit((e) => {
+        e.preventDefault();
+        addEmployee();
+    })
+
+    $('#addEmp').click(() => {
+        popRoleDropdown();
+        $('#managerDropdown').dropdown();
+        $('.ui.modal')
+            .modal('show');
+    })
+
     getAllEmployees();
-    popDropdowns();
+    popDeptDropdowns();
 });

@@ -26,6 +26,12 @@ router.get("/employee/:id", async(req, res) => {
     res.json(peep);
 })
 
+router.get("/employees/managers/:id", async(req, res) => {
+    let { id } = req.params;
+    let peep = await DB.findManagersByDepartment(id);
+    res.json(peep);
+})
+
 router.post("/employee/search", async(req, res) => {
     let search = req.body;
     let peep = await DB.searchEmployee(search);

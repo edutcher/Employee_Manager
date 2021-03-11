@@ -11,7 +11,7 @@
             <div class="ui grid">
                 <div class="five wide column">
                     <h3>Search:</h3>
-                    <form class="ui form">
+                    <form id="searchForm" class="ui form">
                         <div class="field">
                             <label>First Name</label>
                             <input id="firstName" type="text" name="firstName" placeholder="First Name">
@@ -24,11 +24,15 @@
                     </form>
                 </div>
                 <div class="five wide column">
-                    <div id="dptDropdown" class="ui loading selection dropdown">
-                        Departments <i class="dropdown icon"></i>
+                    <div id="deptDropdown" class="ui loading selection dropdown">
+                        Choose Department <i class="dropdown icon"></i>
                         <div id="deptDrop" class="menu">
                         </div>
                     </div>
+                    <div class="field">
+                        <span id="deptChoice"></span>
+                    </div>
+                    <button id="addEmp" class="ui positive button">Add Employee</button>
                 </div>
             </div>
 
@@ -44,6 +48,51 @@
                 <tbody id='empTable'>
                 </tbody>
             </table>
+        </div>
+        <div class="ui modal">
+            <i class="close icon"></i>
+            <div class="header">
+                Add Employee
+            </div>
+            <form id="newEmpForm" class="ui form">
+                <div class="field">
+                    <label>First Name</label>
+                    <input id="newFirstName" type="text" name="newFirstName" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <input id="newLastName" type="text" name="newlastName" placeholder="Last Name">
+                </div>
+                <div class="field">
+                    <div id="roleDropdown" class="ui selection dropdown">
+                        Choose Role <i class="dropdown icon"></i>
+                        <div id="roleDrop" class="menu">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <span id="roleChoice"></span>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="isManager">
+                        <label>Manager</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div id="managerDropdown" class="ui selection dropdown">
+                        Choose Manager <i class="dropdown icon"></i>
+                        <div id="managerDrop" class="menu">
+                            <div class="item">Yo Momma</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <span id="managerChoice"></span>
+                </div>
+                <button id="addButton" class="ui button" type="submit">Add</button>
+            </form>
+
         </div>
     </body>
     <script src="./assets/index.js"></script>

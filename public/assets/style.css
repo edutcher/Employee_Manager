@@ -1,5 +1,26 @@
 h1 {
     text-align: center;
-    margin: 50px;
-    padding: 50px;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+
+.modal {
+    padding: 25px;
+}
+
+#newEmpForm {
+    margin-top: 15px;
+}
+
+button {
+    padding: 15px;
+}
+
+#addEmp {
+    margin: 15px;
+}
+
+#roleChoice {
+    padding: 10px;
+    margin: 10px;
 }
