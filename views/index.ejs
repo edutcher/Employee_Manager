@@ -9,9 +9,21 @@
         <div class='ui container'>
             <h1>Employee Manager</h1>
             <div class="ui grid">
-                <div class="three wide column">Department</div>
-                <div class="three wide column">Role</div>
-                <div class="three wide column">Search</div>
+                <div class="five wide column">
+                    <h3>Search:</h3>
+                    <form class="ui form">
+                        <div class="field">
+                            <label>First Name</label>
+                            <input id="firstName" type="text" name="firstName" placeholder="First Name">
+                        </div>
+                        <div class="field">
+                            <label>Last Name</label>
+                            <input id="lastName" type="text" name="lastName" placeholder="Last Name">
+                        </div>
+                        <button class="ui button" type="submit">Search</button>
+                    </form>
+                </div>
+                <div class="five wide column"></div>
             </div>
 
             <table class="ui celled table">
