@@ -5,8 +5,11 @@ function addEmpToTable(emp) {
     let newName = $('<td>').text(`${emp.first_name} ${emp.last_name}`);
     let newRole = $('<td>').text(`${emp.title}`);
     let newSalary = $('<td>').text(`${emp.salary}`);
-    let newDpt = $('<td>').text(`${emp.name}`);
-    newRow.append(newName, newRole, newSalary, newDpt);
+    let newDept = $('<td>').text(`${emp.name}`);
+    let newMgr;
+    if (emp.manager === null) newMgr = $('<td>').text('Department Head');
+    else newMgr = $('<td>').text(`${emp.manager}`);
+    newRow.append(newName, newRole, newSalary, newDept, newMgr);
     $('#empTable').append(newRow);
 }
 
@@ -17,6 +20,8 @@ function getEmpsByDepartment(id) {
             for (let emp of res.data) {
                 addEmpToTable(emp);
             }
+        }).catch(err => {
+            console.log(err);
         })
 }
 
@@ -27,6 +32,8 @@ function getAllEmployees() {
             for (let emp of res.data) {
                 addEmpToTable(emp);
             }
+        }).catch(err => {
+            console.log(err);
         })
 }
 
@@ -37,6 +44,8 @@ function empSearch(first, last) {
             for (let emp of res.data) {
                 addEmpToTable(emp);
             }
+        }).catch(err => {
+            console.log(err);
         })
 }
 
@@ -63,6 +72,8 @@ function popDeptDropdowns() {
                         $('#deptChoice').data('id', value);
                     }
                 });
+        }).catch(err => {
+            console.log(err);
         });
 }
 
@@ -86,7 +97,9 @@ function popRoleDropdown() {
                     popManagerDropdown();
                 },
             });
-        })
+        }).catch(err => {
+            console.log(err);
+        });
 }
 
 function popManagerDropdown() {
@@ -99,6 +112,7 @@ function popManagerDropdown() {
             break;
         }
     }
+    if (id === undefined) return;
     axios.get(`./api/employees/managers/${id}`)
         .then(res => {
             let managers = [];
@@ -113,8 +127,11 @@ function popManagerDropdown() {
                 onChange: function(value, text, $selectedItem) {
                     $('#managerChoice').text(`Manager: ${text}`);
                     $('#managerChoice').data('id', value);
+                    console.log(value);
                 },
             });
+        }).catch(err => {
+            console.log(err);
         })
 }
 
@@ -124,7 +141,8 @@ function addEmployee() {
     }
     let managerID;
     if ($('#managerChoice').data('id') === undefined) managerID = null;
-    else managerID = parseInt($('#managerChoice').data('id'))
+    else managerID = parseInt($('#managerChoice').data('id'));
+    console.log(managerID);
     let newEmp = {
         firstName: $('#newFirstName').val(),
         lastName: $('#newLastName').val(),
@@ -135,8 +153,7 @@ function addEmployee() {
     axios.post(`./api/employee`, newEmp)
         .then(res => {
             empSearch(newEmp.firstName, newEmp.lastName);
-            $('.ui.modal')
-                .modal('hide');
+            $('.ui.modal').modal('hide');
             $('#newFirstName').val('');
             $('#newLastName').val('');
             $('#roleChoice').text('Choose Role');
@@ -145,7 +162,9 @@ function addEmployee() {
             $('#managerChoice').data('id', undefined);
             $('#deptChoice').text('Choose Department');
             $('#deptChoice').data('id', undefined);
-        })
+        }).catch(err => {
+            console.log(err);
+        });
 }
 
 
@@ -172,8 +191,7 @@ $(document).ready(() => {
     $('#addEmp').click(() => {
         popRoleDropdown();
         $('#managerDropdown').dropdown();
-        $('.ui.modal')
-            .modal('show');
+        $('.ui.modal').modal('show');
     })
 
     getAllEmployees();

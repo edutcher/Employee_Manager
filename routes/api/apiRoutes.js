@@ -28,8 +28,15 @@ router.get("/employee/:id", async(req, res) => {
 
 router.get("/employees/managers/:id", async(req, res) => {
     let { id } = req.params;
-    let peep = await DB.findManagersByDepartment(id);
-    res.json(peep);
+    try {
+        if (id === undefined) res.status(400);
+        let peep = await DB.findManagersByDepartment(id);
+        res.status(200).json(peep);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+
 })
 
 router.post("/employee/search", async(req, res) => {

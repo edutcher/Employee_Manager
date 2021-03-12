@@ -20,7 +20,9 @@ button {
     margin: 15px;
 }
 
-#roleChoice {
+#roleChoice,
+#deptChoice,
+#managerChoice {
     padding: 10px;
     margin: 10px;
 }
