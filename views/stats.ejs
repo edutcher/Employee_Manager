@@ -1,0 +1,29 @@
+<%- include('partials/head.ejs', {pageTitle}) %>
+
+    <div class="container ui grid">
+        <div class="sixteen wide column">
+            <h1>Stats</h1>
+        </div>
+        <div class="four wide column">
+            <div id="deptDropdown" class="ui loading selection dropdown">
+                Choose Department <i class="dropdown icon"></i>
+                <div id="deptDrop" class="menu">
+                </div>
+            </div>
+            <div class="field">
+                <span id="deptChoice"></span>
+            </div>
+
+            <button id="delDeptBtn" class="negative button hidden">Delete Department</button>
+        </div>
+
+        <div id="info">
+            <div id="graph" class="sixteen wide column"></div>
+            <div id="stats" class="ten wide column"></div>
+        </div>
+
+    </div>
+    </body>
+    <script src="./assets/js/stats.js"></script>
+
+    </html>

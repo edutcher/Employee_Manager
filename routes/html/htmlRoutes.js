@@ -16,6 +16,11 @@ router.get("/departments", (req, res) => {
     res.render('departments', { pageTitle });
 });
 
+router.get("/stats", (req, res) => {
+    let pageTitle = 'Stats';
+    res.render('stats', { pageTitle });
+});
+
 router.get("*", (req, res) => {
     let pageTitle = 'Home';
     res.render('index', { pageTitle });
