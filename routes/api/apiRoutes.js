@@ -92,6 +92,28 @@ router.post("/employee", async(req, res) => {
     }
 })
 
+router.post("/department", async(req, res) => {
+    try {
+        let newDept = req.body;
+        let dept = await DB.addDepartment(newDept);
+        res.status(200).json(dept);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+})
+
+router.post("/role", async(req, res) => {
+    try {
+        let newRole = req.body;
+        let role = await DB.addRole(newRole);
+        res.status(200).json(role);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+})
+
 router.put("/employee/:id", async(req, res) => {
     try {
         let { id } = req.params;

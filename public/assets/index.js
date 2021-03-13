@@ -83,7 +83,8 @@ function popDeptDropdowns() {
                         if ($selectedItem.data('id') === 1) getAllEmployees();
                         else getEmpsByDepartment($selectedItem.data('id'));
                         $('#deptChoice').text(`Department: ${text}`);
-                        $('#deptChoice').data('id', value);
+                        $('#deptChoice').data('id', $selectedItem.data('id'));
+                        console.log($('#deptChoice').data('id'));
                         $('#deptMenu').addClass('hidden');
                         $('#roleMenu').removeClass('hidden');
                     }
@@ -179,6 +180,36 @@ function addEmployee() {
         });
 }
 
+function addDepartment() {
+    let newDept = {
+        name: $('#newDept').val(),
+        budget: $('#newDeptBudget').val()
+    }
+    console.log(newDept);
+    axios.post('./api/department', newDept)
+        .then(res => {
+            if ($('#deptChoice').data('id') === undefined) getAllEmployees();
+            else getEmpsByDepartment($('#deptChoice').data('id'));
+            popDeptDropdowns();
+            resetUI();
+        })
+}
+
+function addRole() {
+    if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '' || $('#deptChoice').data('id') === null) return;
+    let newRole = {
+        title: $('#newRoleTitle').val(),
+        salary: $('#newRoleSalary').val(),
+        departmentId: $('#deptChoice').data('id')
+    }
+    axios.post('./api/role', newRole)
+        .then(res => {
+            if ($('#deptChoice').data('id') === undefined) getAllEmployees();
+            else getEmpsByDepartment($('#deptChoice').data('id'));
+            resetUI();
+        })
+}
+
 function resetUI() {
     $('.ui.modal').modal('hide');
     $('#newFirstName').val('');
@@ -188,6 +219,8 @@ function resetUI() {
     $('#managerChoice').text('Choose Manager');
     $('#managerChoice').data('id', undefined);
     $('#newEmpErr').addClass('hidden');
+    $('#newDept').val('');
+    $('#newDeptBudget').val('');
 }
 
 function deleteEmployee() {
@@ -230,6 +263,7 @@ function updateEmployee() {
 
 function allGraph(data) {
     $('#graph').empty();
+    $('#stats').empty();
     let margin = 60;
 
     let graphData = [];
@@ -302,6 +336,8 @@ function deptGraph(data) {
     console.log(data);
 }
 
+
+
 $(document).ready(() => {
 
     popDeptDropdowns();
@@ -349,12 +385,24 @@ $(document).ready(() => {
 
     $('#newEmpForm').submit((e) => {
         e.preventDefault();
-        if ($('#modalTitle').data('id') === null) addEmployee();
+        if ($('#modalTitle').data('id') === undefined) addEmployee();
         else updateEmployee()
     })
 
+    $('#newDeptForm').submit((e) => {
+        e.preventDefault();
+        if ($('#newDept').val() === '' || $('#newDeptBudget').val() === '') return;
+        addDepartment();
+    })
+
+    $('#newRoleForm').submit((e) => {
+        e.preventDefault();
+        if ($('#newRole').val() === '' || $('#newRoleSalary').val() === '') return;
+        addRole();
+    })
+
     $('#addEmp').click(() => {
-        $('#modalTitle').data('id', null);
+        $('#modalTitle').data('id', undefined);
         $('#modalTitle').text('Add Employee');
         $('#addButton').removeClass('hidden').addClass('ui');
         $('#delButton').addClass('hidden').removeClass('ui');
