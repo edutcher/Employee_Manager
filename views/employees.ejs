@@ -3,7 +3,7 @@
     <div class='ui container'>
         <h1>Employee Manager</h1>
         <div class="ui grid">
-            <div class="five wide column">
+            <div class="eight wide column">
                 <h3>Search:</h3>
                 <form id="searchForm" class="ui form">
                     <div class="field">
@@ -17,48 +17,17 @@
                     <button class="ui primary button" type="submit">Search</button>
                 </form>
             </div>
-            <div class="five wide column">
+            <div class="eight wide column">
                 <div id="deptDropdown" class="ui loading selection dropdown">
                     Choose Department <i class="dropdown icon"></i>
                     <div id="deptDrop" class="menu">
                     </div>
                 </div>
-                <div class="field">
-                    <span id="deptChoice"></span>
-                </div>
+                <h3><span id="deptChoice"></span></h3>
                 <button id="addEmp" class="ui positive button">Add Employee</button>
 
-                <button id="delDeptBtn" class="negative button hidden">Delete Department</button>
             </div>
-            <div class="five wide column">
-                <div id="deptMenu">
-                    <form id="newDeptForm" class="ui form">
-                        <div class="field">
-                            <label>New Department</label>
-                            <input id="newDept" type="text" name="newDept" placeholder="New Department">
-                        </div>
-                        <div class="field">
-                            <label>New Department Budget</label>
-                            <input id="newDeptBudget" type="number" name="newDeptBudget" placeholder="New Department Budget">
-                        </div>
-                        <button id="newDeptBtn" class="ui positive button" type="submit">Add Department</button>
-                    </form>
-                </div>
-                <div id="roleMenu" class="hidden">
-                    <form id="newRoleForm" class="ui form">
-                        <div class="field">
-                            <label>New Role Title</label>
-                            <input id="newRoleTitle" type="text" name="newRoleTitle" placeholder="New Role Title">
-                        </div>
-                        <div class="field">
-                            <label>New Role Salary</label>
-                            <input id="newRoleSalary" type="number" name="newRoleSalary" placeholder="New Role Salary">
-                        </div>
-                        <button id="newRoleBtn" class="ui positive button" type="submit">Add Role</button>
-                    </form>
 
-                </div>
-            </div>
         </div>
 
         <table class="ui celled table">
@@ -74,11 +43,6 @@
             <tbody id='empTable'>
             </tbody>
         </table>
-
-        <div id="info" class="ui grid">
-            <div id="graph" class="ten wide column"></div>
-            <div id="stats" class="ten wide column"></div>
-        </div>
 
     </div>
 
@@ -152,6 +116,8 @@
         </div>
     </div>
     </body>
-    <script src="./assets/js/index.js"></script>
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/dropdowns.js"></script>
+    <script src="./assets/js/employee.js"></script>
 
     </html>

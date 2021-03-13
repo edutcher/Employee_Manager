@@ -129,7 +129,6 @@ router.put("/employee/:id", async(req, res) => {
 router.delete("/employee/:id", async(req, res) => {
     try {
         let { id } = req.params;
-        console.log(id);
         let employee = await DB.deleteEmployee(id);
         res.status(200).json(employee);
     } catch (err) {

@@ -1,23 +1,3 @@
-var currentDepartments = [];
-
-function getAllEmployees() {
-    axios.get('./api/employees')
-        .then(res => {
-            allGraph(res.data);
-        }).catch(err => {
-            console.log(err);
-        })
-}
-
-function getDepartments() {
-    axios.get('./api/departments')
-        .then(res => {
-            currentDepartments = res;
-        }).catch(err => {
-            console.log(err);
-        })
-}
-
 function allGraph(data) {
     $('#graph').empty();
     $('#stats').empty();
@@ -27,7 +7,7 @@ function allGraph(data) {
     let height = 400;
     let width = 700;
 
-    for (let dept of currentDepartments.data) {
+    for (let dept of currentDepartments) {
 
         let tempData = data.filter(employee => {
             return dept.name === employee.name
@@ -89,39 +69,12 @@ function allGraph(data) {
 
 }
 
-function popDeptDropdowns() {
-    $('#deptDropdown').addClass('loading');
-    $('#deptDrop').empty();
-    let newItem = $('<div>').addClass('item').text(`All`);
-    newItem.data('id', 1);
-    $('#deptDrop').append(newItem);
-    axios.get('./api/departments')
-        .then(res => {
-            currentDepartments = res;
-            for (let dept of res.data) {
-                let newItem = $('<div>').addClass('item').text(`${dept.name}`);
-                newItem.data('id', dept.id);
-                $('#deptDrop').append(newItem);
-            }
-            $('#deptDropdown').removeClass('loading');
-            $('#deptDropdown')
-                .dropdown({
-                    onChange: function(value, text, $selectedItem) {
-                        if ($selectedItem.data('id') === 1) getAllEmployees();
-                        else getEmpsByDepartment($selectedItem.data('id'));
-                        $('#deptChoice').text(`Department: ${text}`);
-                        $('#deptChoice').data('id', $selectedItem.data('id'));
-                        console.log($('#deptChoice').data('id'));
-                        $('#deptMenu').addClass('hidden');
-                        $('#roleMenu').removeClass('hidden');
-                    }
-                });
-        }).catch(err => {
-            console.log(err);
-        });
-}
-
 $(document).ready(async() => {
-    let stop = await popDeptDropdowns();
-    getAllEmployees();
+
+    $('.ui.dropdown')
+        .dropdown({
+            allowAdditions: true
+        });
+
+    popDeptDropdowns();
 })

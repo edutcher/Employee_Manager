@@ -185,7 +185,6 @@ function addDepartment() {
         name: $('#newDept').val(),
         budget: $('#newDeptBudget').val()
     }
-    console.log(newDept);
     axios.post('./api/department', newDept)
         .then(res => {
             if ($('#deptChoice').data('id') === undefined) getAllEmployees();
