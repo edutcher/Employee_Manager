@@ -233,6 +233,8 @@ function allGraph(data) {
     let margin = 60;
 
     let graphData = [];
+    let height = 400;
+    let width = 700;
 
     for (let dept of currentDepartments.data) {
 
@@ -243,27 +245,56 @@ function allGraph(data) {
         let util = salArray.reduce((accu, curr) => accu + curr)
         let tempObj = {
             name: dept.name,
-            util: util
+            util: util,
+            budget: dept.budget
         }
         graphData.push(tempObj);
     }
 
-    console.log(graphData);
+    let newList = $('<ul>');
+
+    for (let dept of graphData) {
+        let newItem = $('<li>').text(`${dept.name}: ${dept.util} Used of ${dept.budget}`);
+        if (dept.util > dept.budget) newItem.css('color', 'red');
+        newList.append(newItem);
+    }
+
+    $('#stats').append(newList);
 
     const svg = d3.select("#graph")
         .append('svg')
-        .attr('width', 500)
-        .attr('height', 300);
+        .attr('width', 900)
+        .attr('height', 600)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin + "," + margin + ")");
 
-    svg.selectAll('rect')
+    var x = d3.scaleBand()
+        .range([0, width])
+        .domain(data.map(function(d) { return d.name; }))
+        .padding(0.2);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
+
+    var y = d3.scaleLinear()
+        .domain([0, 300000])
+        .range([height, 0]);
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.selectAll("mybar")
         .data(graphData)
         .enter()
-        .append('rect')
-        .attr("x", (d, i) => i * 30)
-        .attr("y", (d, i) => 300 - d.util / 1000)
-        .attr("width", 25)
-        .attr("height", (d, i) => d.util / 1000)
-        .attr('fill', 'navy');
+        .append("rect")
+        .attr("x", function(d) { return x(d.name); })
+        .attr("y", function(d) { return y(d.util); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.util); })
+        .attr("fill", (d) => d.util > d.budget ? 'red' : 'navy')
 
 }
 

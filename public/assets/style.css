@@ -38,3 +38,8 @@ button {
 #info {
     height: 500px;
 }
+
+#graph {
+    height: 600px;
+    width: auto;
+}
