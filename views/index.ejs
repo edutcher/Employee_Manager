@@ -34,6 +34,31 @@
                     </div>
                     <button id="addEmp" class="ui positive button">Add Employee</button>
                 </div>
+                <div class="five wide column">
+                    <div id="deptMenu">
+                        <form id="newDeptForm" class="ui form">
+                            <div class="field">
+                                <label>New Department</label>
+                                <input id="newDept" type="text" name="newDept" placeholder="New Department">
+                            </div>
+                            <button id="newDeptBtn" class="ui button" type="submit">Add Department</button>
+                        </form>
+                    </div>
+                    <div id="roleMenu" class="hidden">
+                        <form id="newRoleForm" class="ui form">
+                            <div class="field">
+                                <label>New Role Title</label>
+                                <input id="newRoleTitle" type="text" name="newRoleTitle" placeholder="New Role Title">
+                            </div>
+                            <div class="field">
+                                <label>New Role Salary</label>
+                                <input id="newRoleSalary" type="text" name="newRoleSalary" placeholder="New Role Salary">
+                            </div>
+                            <button id="newRoleBtn" class="ui button" type="submit">Add Role</button>
+                        </form>
+                        <button id="delDeptBtn" class="ui button">Delete Department</button>
+                    </div>
+                </div>
             </div>
 
             <table class="ui celled table">
@@ -52,7 +77,7 @@
         </div>
         <div class="ui modal">
             <i class="close icon"></i>
-            <div class="header">
+            <div id="modalTitle" class="header">
                 Add Employee
             </div>
             <form id="newEmpForm" class="ui form">
@@ -91,9 +116,16 @@
                 <div class="field">
                     <span id="managerChoice"></span>
                 </div>
+                <button id="delButton" class="ui button hidden">Delete</button>
+                <button id="updateButton" class="ui button hidden" type="submit">Update</button>
                 <button id="addButton" class="ui button" type="submit">Add</button>
             </form>
-
+            <div id="newEmpErr" class="ui message hidden">
+                <div class="header">
+                    Error
+                </div>
+                <p>Full name and role required</p>
+            </div>
         </div>
     </body>
     <script src="./assets/index.js"></script>
