@@ -104,4 +104,38 @@ router.put("/employee/:id", async(req, res) => {
     }
 })
 
+router.delete("/employee/:id", async(req, res) => {
+    try {
+        let { id } = req.params;
+        console.log(id);
+        let employee = await DB.deleteEmployee(id);
+        res.status(200).json(employee);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+})
+
+router.delete("/role/:id", async(req, res) => {
+    try {
+        let { id } = req.params;
+        let role = await DB.deleteEmployee(id);
+        res.status(200).json(role);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+})
+
+router.delete("/department/:id", async(req, res) => {
+    try {
+        let { id } = req.params;
+        let dept = await DB.deleteEmployee(id);
+        res.status(200).json(dept);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+})
+
 module.exports = router;

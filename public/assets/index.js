@@ -1,5 +1,6 @@
 var currentRoles = [];
 var currentManagers = [];
+var currentDepartments = [];
 
 function addEmpToTable(emp) {
     let newRow = $('<tr>');
@@ -23,6 +24,8 @@ function getEmpsByDepartment(id) {
             for (let emp of res.data) {
                 addEmpToTable(emp);
             }
+            $('#delDeptBtn').addClass('ui').removeClass('hidden');
+            deptGraph(res.data);
         }).catch(err => {
             console.log(err);
         })
@@ -37,6 +40,8 @@ function getAllEmployees() {
             }
             $('#deptMenu').removeClass('hidden');
             $('#roleMenu').addClass('hidden');
+            $('#delDeptBtn').addClass('hidden').removeClass('ui');
+            allGraph(res.data);
         }).catch(err => {
             console.log(err);
         })
@@ -51,6 +56,7 @@ function empSearch(first, last) {
             }
             $('#deptMenu').removeClass('hidden');
             $('#roleMenu').addClass('hidden');
+            $('#delDeptBtn').addClass('hidden').removeClass('ui');
         }).catch(err => {
             console.log(err);
         })
@@ -64,6 +70,7 @@ function popDeptDropdowns() {
     $('#deptDrop').append(newItem);
     axios.get('./api/departments')
         .then(res => {
+            currentDepartments = res;
             for (let dept of res.data) {
                 let newItem = $('<div>').addClass('item').text(`${dept.name}`);
                 newItem.data('id', dept.id);
@@ -184,7 +191,14 @@ function resetUI() {
 }
 
 function deleteEmployee() {
-
+    if (!$('#modalTitle').data('id')) return;
+    let id = $('#modalTitle').data('id');
+    axios.delete(`./api/employee/${id}`)
+        .then(res => {
+            if ($('#deptChoice').data('id') === undefined) getAllEmployees();
+            else getEmpsByDepartment($('#deptChoice').data('id'));
+            resetUI();
+        })
 }
 
 function updateEmployee() {
@@ -214,7 +228,52 @@ function updateEmployee() {
         });
 }
 
+function allGraph(data) {
+    $('#graph').empty();
+    let margin = 60;
+
+    let graphData = [];
+
+    for (let dept of currentDepartments.data) {
+
+        let tempData = data.filter(employee => {
+            return dept.name === employee.name
+        });
+        let salArray = tempData.map(emp => emp.salary);
+        let util = salArray.reduce((accu, curr) => accu + curr)
+        let tempObj = {
+            name: dept.name,
+            util: util
+        }
+        graphData.push(tempObj);
+    }
+
+    console.log(graphData);
+
+    const svg = d3.select("#graph")
+        .append('svg')
+        .attr('width', 500)
+        .attr('height', 300);
+
+    svg.selectAll('rect')
+        .data(graphData)
+        .enter()
+        .append('rect')
+        .attr("x", (d, i) => i * 30)
+        .attr("y", (d, i) => 300 - d.util / 1000)
+        .attr("width", 25)
+        .attr("height", (d, i) => d.util / 1000)
+        .attr('fill', 'navy');
+
+}
+
+function deptGraph(data) {
+    console.log(data);
+}
+
 $(document).ready(() => {
+
+    popDeptDropdowns();
 
     $('#searchForm').submit((e) => {
         e.preventDefault();
@@ -239,14 +298,16 @@ $(document).ready(() => {
                 for (let role of currentRoles) {
                     if (role.title === res.data[0].title) $('#roleChoice').data('id', role.id);
                 }
-                $('#managerChoice').text(`Manager: ${res.data[0].manager}`);
+
+                if (res.data[0].manager === null) $('#managerChoice').text('Department Head');
+                else $('#managerChoice').text(`Manager: ${res.data[0].manager}`);
 
                 for (let man of currentManagers) {
                     if ((man.first_name + " " + man.last_name) === res.data[0].manager) $('#managerChoice').data('id', man.id);
                 }
                 popManagerDropdown();
                 $('#newEmpErr').addClass('hidden');
-                $('.ui.modal').modal('show');
+                $('#empModal').modal('show');
             })
     })
 
@@ -269,13 +330,17 @@ $(document).ready(() => {
         $('#updateButton').addClass('hidden').removeClass('ui');
         popRoleDropdown();
         $('#managerDropdown').dropdown();
-        $('.ui.modal').modal('show');
+        $('#empModal').modal('show');
     })
 
     $('#delButton').click(() => {
+        $('#delEmpModal').modal('show');
+    })
+
+    $('#confirmDelEmp').click(() => {
         deleteEmployee();
     })
 
     getAllEmployees();
-    popDeptDropdowns();
+
 });

@@ -18,4 +18,5 @@ FOREIGN KEY (department_id) REFERENCES department(id) );
 CREATE TABLE department (
 id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 title VARCHAR(30),
+budget INT
  );

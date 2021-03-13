@@ -20,7 +20,7 @@
                             <label>Last Name</label>
                             <input id="lastName" type="text" name="lastName" placeholder="Last Name">
                         </div>
-                        <button class="ui button" type="submit">Search</button>
+                        <button class="ui primary button" type="submit">Search</button>
                     </form>
                 </div>
                 <div class="five wide column">
@@ -33,6 +33,8 @@
                         <span id="deptChoice"></span>
                     </div>
                     <button id="addEmp" class="ui positive button">Add Employee</button>
+
+                    <button id="delDeptBtn" class="negative button hidden">Delete Department</button>
                 </div>
                 <div class="five wide column">
                     <div id="deptMenu">
@@ -41,7 +43,11 @@
                                 <label>New Department</label>
                                 <input id="newDept" type="text" name="newDept" placeholder="New Department">
                             </div>
-                            <button id="newDeptBtn" class="ui button" type="submit">Add Department</button>
+                            <div class="field">
+                                <label>New Department Budget</label>
+                                <input id="newDeptBudget" type="text" name="newDeptBudget" placeholder="New Department Budget">
+                            </div>
+                            <button id="newDeptBtn" class="ui positive button" type="submit">Add Department</button>
                         </form>
                     </div>
                     <div id="roleMenu" class="hidden">
@@ -54,9 +60,9 @@
                                 <label>New Role Salary</label>
                                 <input id="newRoleSalary" type="text" name="newRoleSalary" placeholder="New Role Salary">
                             </div>
-                            <button id="newRoleBtn" class="ui button" type="submit">Add Role</button>
+                            <button id="newRoleBtn" class="ui positive button" type="submit">Add Role</button>
                         </form>
-                        <button id="delDeptBtn" class="ui button">Delete Department</button>
+
                     </div>
                 </div>
             </div>
@@ -74,8 +80,15 @@
                 <tbody id='empTable'>
                 </tbody>
             </table>
+
+            <div id="info">
+                <div id="graph" class="six wide column"></div>
+                <div id="stats" class="six wide column"></div>
+            </div>
+
         </div>
-        <div class="ui modal">
+
+        <div id="empModal" class="ui modal">
             <i class="close icon"></i>
             <div id="modalTitle" class="header">
                 Add Employee
@@ -125,6 +138,23 @@
                     Error
                 </div>
                 <p>Full name and role required</p>
+            </div>
+        </div>
+
+        <div id="delEmpModal" class="ui basic modal">
+            <div class="ui icon header">
+                <i class="archive icon"></i> Delete Employee
+            </div>
+            <div class="content">
+                <p>Are you sure you would like to delete the employee?</p>
+            </div>
+            <div class="actions">
+                <div class="ui green basic cancel inverted button">
+                    No
+                </div>
+                <div id="confirmDelEmp" class="ui red ok inverted button">
+                    <i class="remove icon"></i> Yes
+                </div>
             </div>
         </div>
     </body>

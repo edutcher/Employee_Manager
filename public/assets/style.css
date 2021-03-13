@@ -34,3 +34,7 @@ button {
 .emp {
     cursor: pointer;
 }
+
+#info {
+    height: 500px;
+}
