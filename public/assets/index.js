@@ -127,7 +127,6 @@ function popManagerDropdown() {
                 onChange: function(value, text, $selectedItem) {
                     $('#managerChoice').text(`Manager: ${text}`);
                     $('#managerChoice').data('id', value);
-                    console.log(value);
                 },
             });
         }).catch(err => {
@@ -142,7 +141,6 @@ function addEmployee() {
     let managerID;
     if ($('#managerChoice').data('id') === undefined) managerID = null;
     else managerID = parseInt($('#managerChoice').data('id'));
-    console.log(managerID);
     let newEmp = {
         firstName: $('#newFirstName').val(),
         lastName: $('#newLastName').val(),
