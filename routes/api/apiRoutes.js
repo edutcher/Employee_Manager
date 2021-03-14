@@ -140,7 +140,7 @@ router.delete("/employee/:id", async(req, res) => {
 router.delete("/role/:id", async(req, res) => {
     try {
         let { id } = req.params;
-        let role = await DB.deleteEmployee(id);
+        let role = await DB.deleteRole(id);
         res.status(200).json(role);
     } catch (err) {
         console.log(err);
@@ -151,7 +151,7 @@ router.delete("/role/:id", async(req, res) => {
 router.delete("/department/:id", async(req, res) => {
     try {
         let { id } = req.params;
-        let dept = await DB.deleteEmployee(id);
+        let dept = await DB.deleteDepartment(id);
         res.status(200).json(dept);
     } catch (err) {
         console.log(err);
