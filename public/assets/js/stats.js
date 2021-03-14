@@ -137,6 +137,12 @@ function deptGraph(data) {
 
 $(document).ready(async() => {
 
+    $('a.item').each(() => {
+        $(this).removeClass('active');
+    });
+
+    $(`a[href*="${window.location.pathname}"]`).addClass('active');
+
     getRoles().then(res => {
         currentRoles = res;
     });;

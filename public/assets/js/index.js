@@ -339,6 +339,13 @@ function deptGraph(data) {
 
 $(document).ready(() => {
 
+
+    $('a.item').each(() => {
+        $(this).removeClass('active');
+    });
+
+    $(`a[href*="${window.location.pathname}"]`).addClass('active');
+
     popDeptDropdowns();
 
     $('#searchForm').submit((e) => {

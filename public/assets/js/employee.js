@@ -22,8 +22,6 @@ function resetUI() {
     $('#managerChoice').text('Choose Manager');
     $('#managerChoice').data('id', undefined);
     $('#newEmpErr').addClass('hidden');
-    $('#newDept').val('');
-    $('#newDeptBudget').val('');
 }
 
 function empSearch(first, last) {
@@ -106,6 +104,12 @@ function updateEmployee() {
 }
 
 $(document).ready(() => {
+
+    $('a.item').each(() => {
+        $(this).removeClass('active');
+    });
+
+    $(`a[href*="${window.location.pathname}"]`).addClass('active');
 
     popDeptDropdowns();
 

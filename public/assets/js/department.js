@@ -8,12 +8,10 @@ function addDepartment() {
             if ($('#deptChoice').data('id') === undefined) getAllEmployees();
             else getEmpsByDepartment($('#deptChoice').data('id'));
             popDeptDropdowns();
-            resetUI();
         })
 }
 
 function addRole() {
-    if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '' || $('#deptChoice').data('id') === undefined) return;
     let newRole = {
         title: $('#newRoleTitle').val(),
         salary: $('#newRoleSalary').val(),
@@ -23,11 +21,16 @@ function addRole() {
         .then(res => {
             if ($('#deptChoice').data('id') === undefined) getAllEmployees();
             else getEmpsByDepartment($('#deptChoice').data('id'));
-            resetUI();
         })
 }
 
 $(document).ready(async() => {
+
+    $('a.item').each(() => {
+        $(this).removeClass('active');
+    });
+
+    $(`a[href*="${window.location.pathname}"]`).addClass('active');
 
     $('.ui.dropdown')
         .dropdown({
@@ -36,13 +39,21 @@ $(document).ready(async() => {
 
     $('#newDeptForm').submit((e) => {
         e.preventDefault();
-        if ($('#newDept').val() === '' || $('#newDeptBudget').val() === '') return;
+        if ($('#newDept').val() === '' || $('#newDeptBudget').val() === '') {
+            $('#deptErr').removeClass('hidden');
+            return;
+        }
+        $('#deptErr').addClass('hidden');
         addDepartment();
     })
 
     $('#newRoleForm').submit((e) => {
         e.preventDefault();
-        if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '') return;
+        if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '' || $('#deptChoice').data('id') === undefined) {
+            $('#deptErr').removeClass('hidden');
+            return;
+        }
+        $('#deptErr').addClass('hidden');
         addRole();
     })
 
