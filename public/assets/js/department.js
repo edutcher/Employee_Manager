@@ -13,7 +13,7 @@ function addDepartment() {
 }
 
 function addRole() {
-    if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '' || $('#deptChoice').data('id') === null) return;
+    if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '' || $('#deptChoice').data('id') === undefined) return;
     let newRole = {
         title: $('#newRoleTitle').val(),
         salary: $('#newRoleSalary').val(),
@@ -42,7 +42,7 @@ $(document).ready(async() => {
 
     $('#newRoleForm').submit((e) => {
         e.preventDefault();
-        if ($('#newRole').val() === '' || $('#newRoleSalary').val() === '') return;
+        if ($('#newRoleTitle').val() === '' || $('#newRoleSalary').val() === '') return;
         addRole();
     })
 

@@ -1,17 +1,14 @@
 <%- include('partials/head.ejs',{pageTitle}) %>
 
     <div class="container ui grid">
-
-        <div class="row">
+        <h1>Department Manager</h1>
+        <div id="deptMenu" class="row">
             <div class="six wide column">
                 <div id="deptDropdown" class="ui loading selection dropdown">
                     Choose Department <i class="dropdown icon"></i>
                     <div id="deptDrop" class="menu">
                     </div>
                 </div>
-
-
-
 
             </div>
             <div class="five wide column">
@@ -20,7 +17,7 @@
             <div id="delDeptArea" class="five wide hidden">
                 <button id="delDeptBtn" class="negative button ui">Delete Department</button>
             </div>
-            <div id="deptMenu" class="sixteen wide column">
+            <div class="sixteen wide column">
                 <form id="newDeptForm" class="ui form">
                     <div class="field">
                         <label>New Department</label>
@@ -36,8 +33,7 @@
 
         </div>
 
-        <div id="roleMenu" class="row">
-
+        <div id="roleMenu" class="hidden">
             <div class="six wide column">
                 <div class="field">
                     <div id="roleDropdown" class="ui selection dropdown">

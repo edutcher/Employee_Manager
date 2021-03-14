@@ -16,10 +16,16 @@ function popDeptDropdowns() {
             $('#deptDropdown')
                 .dropdown({
                     onChange: function(value, text, $selectedItem) {
-                        if (window.location.pathname === '/departments') $('#delDeptArea').removeClass('hidden').addClass('column');
+                        if (window.location.pathname === '/departments') {
+                            $('#delDeptArea').removeClass('hidden').addClass('column');
+                            $('#roleMenu').removeClass('hidden').addClass('row');
+                        }
                         if ($selectedItem.data('id') === 1) {
-                            if (window.location.pathname === '/employees') getAllEmployees();
-                            if (window.location.pathname === '/departments') $('#delDeptArea').addClass('hidden').removeClass('column');
+                            if (window.location.pathname === '/employees' || "/sales") getAllEmployees();
+                            if (window.location.pathname === '/departments') {
+                                $('#delDeptArea').addClass('hidden').removeClass('column');
+                                $('#roleMenu').addClass('hidden').removeClass('row');
+                            }
                         } else getEmpsByDepartment($selectedItem.data('id'));
                         $('#deptChoice').text(`Department: ${text}`);
                         $('#deptChoice').data('id', $selectedItem.data('id'));
@@ -37,27 +43,26 @@ function popDeptDropdowns() {
 function popRoleDropdown() {
     $('#roleDropdown').addClass('loading');
     $('#roleDrop').empty();
-    axios.get('./api/roles')
-        .then(res => {
-            currentRoles = res.data;
-            let roles = [];
-            for (let role of res.data) {
-                let newRole = { value: role.id, name: role.title, text: role.title };
-                roles.push(newRole);
-            }
-            $('#roleDropdown').removeClass('loading');
-            $('#roleDropdown').dropdown('change values', roles);
-            $('#roleDropdown').dropdown({
-                onChange: function(value, text, $selectedItem) {
-                    if (window.location.pathname === '/departments') $('#delRoleArea').removeClass('hidden').addClass('column');
-                    $('#roleChoice').text(`Role: ${text}`);
-                    $('#roleChoice').data('id', value);
-                    if (window.location.pathname === "/employees") popManagerDropdown();
-                },
-            });
-        }).catch(err => {
-            console.log(err);
+    getRoles().then(res => {
+        currentRoles = res;
+        let roles = [];
+        for (let role of res) {
+            let newRole = { value: role.id, name: role.title, text: role.title };
+            roles.push(newRole);
+        }
+        $('#roleDropdown').removeClass('loading');
+        $('#roleDropdown').dropdown('change values', roles);
+        $('#roleDropdown').dropdown({
+            onChange: function(value, text, $selectedItem) {
+                if (window.location.pathname === '/departments') $('#delRoleArea').removeClass('hidden').addClass('column');
+                $('#roleChoice').text(`Role: ${text}`);
+                $('#roleChoice').data('id', value);
+                if (window.location.pathname === "/employees") popManagerDropdown();
+            },
         });
+    }).catch(err => {
+        console.log(err);
+    });
 }
 
 async function popManagerDropdown() {
@@ -72,20 +77,21 @@ async function popManagerDropdown() {
     }
     if (id === undefined) return;
 
-    currentManagers = await getManagersByDept(id);
-    let managers = [];
-    for (let manager of currentManagers) {
-        let newName = manager.first_name + ' ' + manager.last_name;
-        let newManager = { value: manager.id, name: newName, text: newName };
-        managers.push(newManager);
-    }
-    $('#managerDropdown').removeClass('loading');
-    $('#managerDropdown').dropdown('change values', managers);
-    $('#managerDropdown').dropdown({
-        onChange: function(value, text, $selectedItem) {
-            $('#managerChoice').text(`Manager: ${text}`);
-            $('#managerChoice').data('id', value);
-        },
+    getManagersByDept(id).then(res => {;
+        let managers = [];
+        for (let manager of res) {
+            let newName = manager.first_name + ' ' + manager.last_name;
+            let newManager = { value: manager.id, name: newName, text: newName };
+            managers.push(newManager);
+        }
+        $('#managerDropdown').removeClass('loading');
+        $('#managerDropdown').dropdown('change values', managers);
+        $('#managerDropdown').dropdown({
+            onChange: function(value, text, $selectedItem) {
+                $('#managerChoice').text(`Manager: ${text}`);
+                $('#managerChoice').data('id', value);
+            },
+        })
     });
 
 }

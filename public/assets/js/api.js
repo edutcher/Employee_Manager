@@ -42,8 +42,23 @@ function getEmpsByDepartment(id) {
 }
 
 function getManagersByDept(id) {
-    let result;
-    axios.get(`./api/employees/managers/${id}`)
-        .then(res => { result = res.data })
-    return result;
+    return new Promise((resolve, reject) => {
+        axios.get(`./api/employees/managers/${id}`)
+            .then(res => {
+                return resolve(res.data);
+            }).catch((err) => {
+                reject(err);
+            })
+    });
+}
+
+function getRoles() {
+    return new Promise((resolve, reject) => {
+        axios.get(`./api/roles`)
+            .then(res => {
+                return resolve(res.data);
+            }).catch((err) => {
+                reject(err);
+            })
+    });
 }

@@ -159,6 +159,12 @@ $(document).ready(() => {
     $('#addEmp').click(() => {
         $('#modalTitle').data('id', undefined);
         $('#modalTitle').text('Add Employee');
+        $('#newFirstName').val('');
+        $('#newLastName').val('');
+        $('#roleChoice').text(`Choose Role`);
+        $('#roleChoice').data('id', undefined);
+        $('#managerChoice').text(`Choose Manager`);
+        $('#managerChoice').data('id', undefined);
         $('#addButton').removeClass('hidden').addClass('ui');
         $('#delButton').addClass('hidden').removeClass('ui');
         $('#updateButton').addClass('hidden').removeClass('ui');

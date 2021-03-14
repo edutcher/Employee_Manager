@@ -43,3 +43,26 @@ button {
     height: 600px;
     width: auto;
 }
+
+#deptMenu,
+#roleMenu {
+    margin: 15px;
+}
+
+#newDeptForm,
+#newRoleForm {
+    margin: 15px;
+}
+
+#stats {
+    margin: 15px;
+    padding: 20px;
+}
+
+footer {
+    padding: 30px;
+}
+
+body {
+    margin: 5px;
+}
